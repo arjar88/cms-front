@@ -8,15 +8,17 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-export function TableCard({ children, ...props }) {
+const TableCard: React.FC = ({ children, ...props }) => {
   return (
     <Card className={cn("w-[80em]")} {...props}>
       <CardHeader className="text-left">
         <CardTitle>Notifications</CardTitle>
-        <CardDescription>You have 3 unread messages.</CardDescription>
+        {children[0]}
       </CardHeader>
-      <CardContent className="grid gap-4">{children}</CardContent>
+      <CardContent className="grid gap-4">{children[1]}</CardContent>
       <CardFooter></CardFooter>
     </Card>
   );
-}
+};
+
+export default TableCard;

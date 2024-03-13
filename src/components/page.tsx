@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Payment, columns } from "./columns";
 import { DataTable } from "./data_table";
-import { TableCard } from "./table_card";
+import TableCard from "./table_card";
+import Options from "./options";
 
 // Function to fetch data
 async function getData(): Promise<Payment[]> {
@@ -67,7 +68,7 @@ async function getData(): Promise<Payment[]> {
 }
 
 // DemoPage component
-export default function DemoPage() {
+const DemoPage: React.FC = () => {
   // State to store data
   const [data, setData] = useState<Payment[]>([]);
 
@@ -84,8 +85,11 @@ export default function DemoPage() {
   return (
     <div className="container py-10">
       <TableCard>
+        <Options options={["Main", "Lists", "Published", "Forms"]}></Options>
         <DataTable columns={columns} data={data} />
       </TableCard>
     </div>
   );
-}
+};
+
+export default DemoPage;
