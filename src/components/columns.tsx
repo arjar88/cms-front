@@ -1,9 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-
-//Columns are where you define the core of what your table will look like.// They define the data that will be displayed, how it will be formatted, sorted and filtered.
 export type Payment = {
   id: string;
   amount: number;
