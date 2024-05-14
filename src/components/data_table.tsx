@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import SideNav from "./side_nav";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -30,7 +31,18 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border overflow-x-auto">
+    <div className="rounded-md border overflow-x-auto flex">
+      <SideNav
+        options={[
+          { name: "object ", icon: "icon", link: "wwwwwww" },
+          { name: "object ", icon: "icon", link: "wwwwwww" },
+          { name: "object ", icon: "icon", link: "wwwwwww" },
+          { name: "object ", icon: "icon", link: "wwwwwww" },
+          { name: "object ", icon: "icon", link: "wwwwwww" },
+          { name: "object ", icon: "icon", link: "wwwwwww" },
+        ]}
+        navHeader={{ title: "Title" }}
+      />
       <Table className="w-full">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -48,6 +60,7 @@ export function DataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
+
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
