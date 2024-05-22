@@ -1,8 +1,10 @@
+import { useState } from "react";
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
+  RowSelectionState,
 } from "@tanstack/react-table";
 
 import {
@@ -24,10 +26,16 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onRowSelectionChange: setRowSelection,
+    state: {
+      rowSelection,
+    },
   });
 
   return (
@@ -48,7 +56,7 @@ export function DataTable<TData, TValue>({
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead className="w-[100px] py-2 px-4 " key={header.id}>
+                <TableHead className="w-[100px] py-2 px-4" key={header.id}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -60,7 +68,6 @@ export function DataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
-
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (

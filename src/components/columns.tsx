@@ -1,4 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export type Lead = {
   id: string;
@@ -12,6 +13,30 @@ export type Lead = {
 };
 
 export const columns: ColumnDef<Lead>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        //className="w-4 h-4" // Adjust size here
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        className="w-4 h-4" // Adjust size here
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "name",
     header: () => <div className="text-center">Name</div>,
