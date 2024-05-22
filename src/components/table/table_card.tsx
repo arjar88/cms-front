@@ -4,6 +4,7 @@ import { DataTable } from "./data_table";
 import TableHeader from "./table_header";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import UtilityBar from "../utility_bar";
+import ActionBar from "./action_bar";
 
 import { cn } from "@/lib/utils";
 
@@ -81,6 +82,7 @@ const TableCard: React.FC = () => {
     <Card className={cn("w-[80em]")}>
       <TableHeader />
       <UtilityBar />
+      <ActionBar />
       <CardContent className="grid gap-4">
         <DataTable data={data} columns={columns} />
       </CardContent>
