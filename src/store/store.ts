@@ -1,11 +1,12 @@
-// src/store/store.js
+// src/store/store.ts
 import { configureStore } from "@reduxjs/toolkit";
-import exampleReducer from "./exampleSlice";
 import selectedRowsReducer from "./selectedRowsSlice";
 
 export const store = configureStore({
   reducer: {
-    example: exampleReducer,
     selectedRows: selectedRowsReducer,
   },
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

@@ -1,7 +1,11 @@
-// src/store/selectedRowsSlice.js
-import { createSlice } from "@reduxjs/toolkit";
+// src/store/selectedRowsSlice.ts
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+interface SelectedRowsState {
+  selectedRowIds: string[];
+}
+
+const initialState: SelectedRowsState = {
   selectedRowIds: [],
 };
 
@@ -9,7 +13,7 @@ const selectedRowsSlice = createSlice({
   name: "selectedRows",
   initialState,
   reducers: {
-    toggleRowSelection: (state, action) => {
+    toggleRowSelection: (state, action: PayloadAction<string>) => {
       const index = state.selectedRowIds.indexOf(action.payload);
       if (index === -1) {
         state.selectedRowIds.push(action.payload);
