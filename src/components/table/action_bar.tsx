@@ -1,5 +1,5 @@
 import React from "react";
-import { Trash2, ScrollText } from "lucide-react";
+import { Trash2, ScrollText, CirclePlus } from "lucide-react";
 import { CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -9,6 +9,10 @@ const actions = [
   {
     name: "ScrollText",
     icon: <ScrollText />,
+  },
+  {
+    name: "CirclePlus ",
+    icon: <CirclePlus className=" text-green-500" />,
   },
 ];
 
