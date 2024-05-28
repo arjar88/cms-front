@@ -2,7 +2,7 @@ import React from "react";
 
 interface NavOption {
   name: string;
-  icon: React.ReactNode; // React node for displaying icons (can be SVG, FontAwesome icon, etc.)
+  icon: React.ReactNode;
   link: string;
 }
 
@@ -13,7 +13,7 @@ interface SideNavProps {
 
 const SideNav: React.FC<SideNavProps> = ({ options, navHeader }) => {
   return (
-    <div className="flex flex-col p-4 border-r">
+    <div className="flex flex-col p-4 border-r ">
       {/* Navigation header (optional) */}
       {navHeader && (
         <div className="flex items-center mb-4">

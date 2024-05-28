@@ -5,6 +5,7 @@ import TableHeader from "./table_header";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import UtilityBar from "../utility_bar";
 import ActionBar from "./action_bar";
+import { crudApi } from "@/api";
 
 import { cn } from "@/lib/utils";
 
@@ -77,6 +78,8 @@ const TableCard: React.FC = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {}, []);
 
   return (
     <Card className={cn("w-[80em]")}>

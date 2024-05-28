@@ -1,7 +1,5 @@
 import TableCard from "./table/table_card";
-import DBM from "frontend_crud_actions";
 
-// DemoPage component
 const DemoPage: React.FC = () => {
   return (
     <div className="container py-10">
