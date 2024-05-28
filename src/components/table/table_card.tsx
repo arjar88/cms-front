@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Payment, columns } from "../columns";
+import { columns } from "../columns";
 import { DataTable } from "./data_table";
 import TableHeader from "./table_header";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";

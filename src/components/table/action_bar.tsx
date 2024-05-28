@@ -3,7 +3,6 @@ import { Trash2, ScrollText, CirclePlus } from "lucide-react";
 import { CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-// Define actions with icon components
 const actions = [
   { name: "Trash2", icon: <Trash2 className=" text-red-500" /> },
   {
