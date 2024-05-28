@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 const TableCard: React.FC = () => {
   // Function to fetch data
-  async function getData(): Promise<Payment[]> {
+  async function getData(): Promise<any[]> {
     // Fetch data from your API here.
     return [
       {
@@ -66,7 +66,7 @@ const TableCard: React.FC = () => {
     ];
   }
 
-  const [data, setData] = useState<Payment[]>([]);
+  const [data, setData] = useState<any[]>([]);
 
   // Effect to fetch data on component mount
   useEffect(() => {
