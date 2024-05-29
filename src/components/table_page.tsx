@@ -3,6 +3,9 @@ import TableCard from "./table/table_card";
 import { crudApi } from "@/api";
 
 const TablePage: React.FC = () => {
+  //fetch initialk data
+  const fetchInitialData = async () => {};
+
   useEffect(() => {});
 
   return (
