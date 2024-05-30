@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import { crudApi } from "@/api";
 import TableCard from "./table/table_card";
-import { setClients } from "@/store/clientSlice"; // Import the setClients action
+import { setClients } from "@/store/clientSlice";
+import { setObjects } from "@/store/objectSlice";
 
 const TablePage: React.FC = () => {
   const dispatch = useDispatch();
@@ -12,13 +13,21 @@ const TablePage: React.FC = () => {
   // Fetch initial data
   const fetchInitialData = async () => {
     try {
+      //retrive clients
       const clients: any[] = await crudApi.fetchItems("client");
-      console.log(clients, "response");
-      dispatch(setClients(clients));
+      //filter clients
+      const userClients = clients.filter((c) =>
+        user.clientIds.find((ui: any) => ui === c._id)
+      );
+      dispatch(setClients(userClients));
 
-      const objects: any[] = await crudApi.fetchItems("client", {
-        userId: user.id,
+      //retrive objects
+      const objects: any[] = await crudApi.fetchItems("object", {
+        clientId: userClients[0]._id,
       });
+      dispatch(setObjects(objects));
+
+      console.log(objects, "objects");
     } catch (e) {
       console.error("Error fetching initial data", e);
     }

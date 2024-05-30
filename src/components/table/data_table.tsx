@@ -40,17 +40,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="rounded-md border overflow-x-auto flex">
-      <SideNav
-        options={[
-          { name: "object ", icon: "icon", link: "wwwwwww" },
-          { name: "object ", icon: "icon", link: "wwwwwww" },
-          { name: "object ", icon: "icon", link: "wwwwwww" },
-          { name: "object ", icon: "icon", link: "wwwwwww" },
-          { name: "object ", icon: "icon", link: "wwwwwww" },
-          { name: "object ", icon: "icon", link: "wwwwwww" },
-        ]}
-        navHeader={{ title: "Title" }}
-      />
+      <SideNav />
       <Table className="w-full">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

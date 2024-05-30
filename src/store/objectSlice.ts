@@ -14,15 +14,15 @@ const objectSlice = createSlice({
   name: "object",
   initialState,
   reducers: {
-    setClients: (state, action: PayloadAction<any>) => {
+    setObjects: (state, action: PayloadAction<any>) => {
       state.objects = action.payload;
     },
-    setSelectedClient: (state, action: PayloadAction<any>) => {
+    setSelectedObject: (state, action: PayloadAction<any>) => {
       state.selectedObject = action.payload;
     },
   },
 });
 
-export const { setClients, setSelectedClient } = objectSlice.actions;
+export const { setObjects, setSelectedObject } = objectSlice.actions;
 
 export default objectSlice.reducer;
