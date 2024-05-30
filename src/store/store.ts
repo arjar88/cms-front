@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import selectedRowsReducer from "./selectedRowsSlice";
 import userSlice from "./userSlice";
 import clientSlice from "./clientSlice";
+import objectSlice from "./objectSlice";
 
 export const store = configureStore({
   reducer: {
     selectedRows: selectedRowsReducer,
     userSlice: userSlice,
     clientSlice: clientSlice,
+    objectSlice: objectSlice,
   },
 });
 
