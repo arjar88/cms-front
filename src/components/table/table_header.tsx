@@ -2,11 +2,14 @@ import { CardHeader, CardTitle } from "@/components/ui/card";
 import Options from "./options";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Settings } from "lucide-react";
+import ClientSelect from "../client_select";
 
 const TableHeader: React.FC = () => {
   return (
     <CardHeader className="text-left">
-      <CardTitle>CMS</CardTitle>
+      <CardTitle>
+        <ClientSelect />
+      </CardTitle>
       <div className="flex">
         <div className="flex-grow">
           <Options options={["Main", "Lists", "Published", "Forms"]}></Options>

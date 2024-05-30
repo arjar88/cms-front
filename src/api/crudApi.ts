@@ -10,14 +10,24 @@ export const createItem = async <T>(endpoint: string, data: T): Promise<T> => {
   return response.data;
 };
 
-export const readItems = async <T>(endpoint: string): Promise<T[]> => {
+export const fetchItems = async <T>(
+  endpoint: string,
+  queryParams: Record<string, any> = {}
+): Promise<T[]> => {
   const response: AxiosResponse<T[]> = await axios.get(
-    `${API_BASE_URL}/${endpoint}`
+    `${API_BASE_URL}/${endpoint}`,
+    {
+      params: queryParams,
+      withCredentials: true,
+    }
   );
   return response.data;
 };
 
-export const readItem = async <T>(endpoint: string, id: string): Promise<T> => {
+export const fetchItem = async <T>(
+  endpoint: string,
+  id: string
+): Promise<T> => {
   const response: AxiosResponse<T> = await axios.get(
     `${API_BASE_URL}/${endpoint}/${id}`
   );

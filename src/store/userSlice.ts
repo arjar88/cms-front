@@ -5,7 +5,10 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  user: null,
+  user: {
+    id: "6654be63d21e30992eed6fbe",
+    clientIds: ["6655b1788083f16b408ab61d", "6658525caea2f4e6654c19b4"],
+  },
 };
 
 const userSlice = createSlice({
