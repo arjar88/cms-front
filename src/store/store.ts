@@ -1,16 +1,20 @@
 // src/store/store.ts
 import { configureStore } from "@reduxjs/toolkit";
 import selectedRowsReducer from "./selectedRowsSlice";
-import userSlice from "./userSlice";
-import clientSlice from "./clientSlice";
-import objectSlice from "./objectSlice";
+import userReducer from "./userSlice";
+import clientReducer from "./clientSlice";
+import objectReducer from "./objectSlice";
+import propertyReducer from "./propertySlice";
+import dataReducer from "./dataSlice";
 
 export const store = configureStore({
   reducer: {
     selectedRows: selectedRowsReducer,
-    userSlice: userSlice,
-    clientSlice: clientSlice,
-    objectSlice: objectSlice,
+    user: userReducer,
+    clients: clientReducer,
+    objects: objectReducer,
+    properties: propertyReducer,
+    data: dataReducer,
   },
 });
 

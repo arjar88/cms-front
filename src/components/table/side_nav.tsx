@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 
 const SideNav: React.FC = () => {
-  const objects = useSelector((state: RootState) => state.objectSlice.objects);
+  const { objects } = useSelector((state: RootState) => state.objects);
 
   return (
     <div className="flex flex-col p-4 border-r ">

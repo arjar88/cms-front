@@ -12,7 +12,7 @@ import {
 
 const ClientSelect: React.FC = () => {
   const dispatch = useDispatch();
-  const clients = useSelector((state: RootState) => state.clientSlice.clients);
+  const { clients } = useSelector((state: RootState) => state.clients);
   const [selectedOption, setSelectedOption] = useState(
     clients.length > 0 ? clients[0].name : ""
   );

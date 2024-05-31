@@ -1,111 +1,58 @@
+// columns.tsx
+import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export type Lead = {
-  id: string;
-  name: number;
-  company: string;
-  stage: "pending" | "processing" | "success" | "failed";
-  phoneNumber: string;
-  notes: string;
-  folder: string;
-  availableFrom: Date;
+  [key: string]: any;
 };
 
-export const columns: ColumnDef<Lead>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        //className="w-4 h-4" // Adjust size here
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        className="w-4 h-4" // Adjust size here
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: () => <div className="text-center">Name</div>,
-    cell: ({ row }) => {
-      const name = row.getValue("name");
-      return <div className="capitalize">{name}</div>;
-    },
-  },
-  {
-    accessorKey: "company",
-    header: () => <div className="text-center">Company</div>,
-    cell: ({ row }) => {
-      const company = row.getValue("company");
-      return <div className="capitalize">{company}</div>;
-    },
-  },
-  {
-    accessorKey: "stage",
-    header: () => <div className="text-center">Stage</div>,
-    cell: ({ row }) => {
-      const stage = row.getValue("stage");
+export const useColumns = (): ColumnDef<Lead>[] => {
+  // Using useSelector to get properties from the Redux store
+  const { properties } = useSelector((state: RootState) => state.properties);
+  console.log(properties, "properties");
 
-      return <div className="capitalize">{stage}</div>;
-    },
-  },
-  {
-    accessorKey: "phoneNumber",
-    header: () => <div className="text-center">Phone Number</div>,
-    cell: ({ row }) => {
-      const phoneNumber = row.getValue("phoneNumber");
+  // Memoizing the columns array to avoid unnecessary recalculations
+  const columns: ColumnDef<Lead>[] = useMemo(() => {
+    if (!properties || properties.length === 0) return [];
 
-      return <div className="capitalize">{phoneNumber}</div>;
+    return properties.map((property) => ({
+      accessorKey: property.internalName,
+      header: () => <div className="text-center">{property.name}</div>,
+      cell: ({ row }) => {
+        const value = row.getValue(property.internalName);
+        return <div className="text-center">{value}</div>;
+      },
+    }));
+  }, [properties]); // Recalculate columns only when properties change
+
+  // Returning the full columns array, including a static select column
+  return [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          className="w-4 h-4"
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
     },
-  },
-  {
-    accessorKey: "notes",
-    header: () => <div className="text-center">Notes</div>,
-    cell: ({ row }) => {
-      const notes = row.getValue("notes");
-      return <div className="text-center font-medium">{notes}</div>;
-    },
-  },
-  {
-    accessorKey: "folder",
-    header: () => <div className="text-center">Folder</div>,
-    cell: ({ row }) => {
-      const folder = row.getValue("folder");
-      return <div className="text-center font-medium">{folder}</div>;
-    },
-  },
-  {
-    accessorKey: "id",
-    header: () => <div className="text-center">ID</div>,
-    cell: ({ row }) => {
-      const id = row.getValue("id");
-      return <div className="text-center font-medium">{id}</div>;
-    },
-  },
-  {
-    accessorKey: "availableFrom",
-    header: () => <div className="text-center">Available From</div>,
-    cell: ({ row }) => {
-      const availableFrom = new Date(row.getValue("availableFrom"));
-      const formattedDate = availableFrom.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      });
-      return <div className="text-center font-medium">{formattedDate}</div>;
-    },
-  },
-];
+    ...columns, // Dynamic columns based on properties
+  ];
+};

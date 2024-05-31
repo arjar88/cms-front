@@ -66,9 +66,10 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
                 className="hover:bg-gray-100"
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell className="py-2 px-4" key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                {columns.map((column) => (
+                  <TableCell className="py-2 px-4" key={column.accessorKey}>
+                    {/* Access value from data object using the column accessorKey */}
+                    {row.original.values[column.accessorKey]}
                   </TableCell>
                 ))}
               </TableRow>
