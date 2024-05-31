@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import { crudApi } from "@/api";
 import TableCard from "./table/table_card";
-import { setClients } from "@/store/clientSlice";
+import { setClients, setSelectedClient } from "@/store/clientSlice";
 import { setObjects, setSelectedObject } from "@/store/objectSlice";
 import { setProperties } from "@/store/propertySlice";
 import { setData } from "@/store/dataSlice";
@@ -24,6 +24,7 @@ const TablePage: React.FC = () => {
       dispatch(setClients(userClients));
 
       if (userClients.length > 0) {
+        dispatch(setSelectedClient(userClients[0]));
         //retrive objects
         const objects: any[] = await crudApi.fetchItems("object", {
           clientId: userClients[0]._id,

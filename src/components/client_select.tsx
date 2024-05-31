@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import { setSelectedClient } from "@/store/clientSlice";
 import {
   Select,
   SelectTrigger,
@@ -9,17 +8,29 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import useFetchBaseClientData from "../hooks/useFetchBaseClientData";
 
 const ClientSelect: React.FC = () => {
-  const dispatch = useDispatch();
   const { clients } = useSelector((state: RootState) => state.clients);
-  const [selectedOption, setSelectedOption] = useState(
-    clients.length > 0 ? clients[0].name : ""
+  const selectedClient = useSelector(
+    (state: RootState) => state.clients.selectedClient
   );
 
+  const [selectedOption, setSelectedOption] = useState(
+    selectedClient ? selectedClient.name : "Select Client"
+  );
+
+  const { setSelectedClient } = useFetchBaseClientData();
+
+  // Update selectedOption when selectedClient changes
+  useEffect(() => {
+    setSelectedOption(selectedClient ? selectedClient.name : "Select Client");
+  }, [selectedClient]);
+
   const updateSelected = (value: any) => {
+    const selected = clients.find((client) => client.name === value);
     setSelectedOption(value);
-    dispatch(setSelectedClient(value));
+    setSelectedClient(selected); // This will trigger fetchClientData via the custom hook
   };
 
   return (
