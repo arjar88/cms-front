@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchClientData } from "../store/thunks";
 import { RootState } from "../store/store";
-import { setSelectedClient } from "../store/clientSlice";
+import { setSelectedClient } from "../store/slices/clientSlice";
 
 const useFetchBaseClientData = () => {
   const dispatch = useDispatch();

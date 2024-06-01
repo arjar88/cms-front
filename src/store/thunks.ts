@@ -1,9 +1,9 @@
 // src/store/thunks.ts
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { crudApi } from "../api/index";
-import { setObjects, setSelectedObject } from "./objectSlice";
-import { setProperties } from "./propertySlice";
-import { setData } from "./dataSlice";
+import { setObjects, setSelectedObject } from "./slices/objectSlice";
+import { setProperties } from "./slices/propertySlice";
+import { setData } from "./slices/dataSlice";
 
 export const fetchClientData = createAsyncThunk(
   "client/fetchClientData",

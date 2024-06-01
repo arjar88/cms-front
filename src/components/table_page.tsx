@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import { crudApi } from "@/api";
 import TableCard from "./table/table_card";
-import { setClients, setSelectedClient } from "@/store/clientSlice";
-import { setObjects, setSelectedObject } from "@/store/objectSlice";
-import { setProperties } from "@/store/propertySlice";
-import { setData } from "@/store/dataSlice";
+import { setClients, setSelectedClient } from "../store/slices/clientSlice";
+import { setObjects, setSelectedObject } from "../store/slices/objectSlice";
+import { setProperties } from "@/store/slices/propertySlice";
+import { setData } from "@/store/slices/dataSlice";
 
 const TablePage: React.FC = () => {
   const dispatch = useDispatch();
