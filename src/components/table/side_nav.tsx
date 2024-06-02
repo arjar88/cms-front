@@ -4,7 +4,6 @@ import { RootState } from "../../store/store";
 
 const SideNav: React.FC = () => {
   const { objects } = useSelector((state: RootState) => state.objects);
-  console.log("sideNave objects", objects);
   return (
     <div className="flex flex-col p-4 border-r ">
       {/* Navigation header (optional)

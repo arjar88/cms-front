@@ -5,7 +5,10 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const createItem = async <T>(endpoint: string, data: T): Promise<T> => {
   const response: AxiosResponse<T> = await axios.post(
     `${API_BASE_URL}/${endpoint}`,
-    data
+    data,
+    {
+      withCredentials: true,
+    }
   );
   return response.data;
 };

@@ -12,7 +12,6 @@ export type Lead = {
 export const useColumns = (): ColumnDef<Lead>[] => {
   // Using useSelector to get properties from the Redux store
   const { properties } = useSelector((state: RootState) => state.properties);
-  console.log(properties, "properties");
 
   // Memoizing the columns array to avoid unnecessary recalculations
   const columns: ColumnDef<Lead>[] = useMemo(() => {

@@ -43,9 +43,6 @@ const TablePage: React.FC = () => {
           });
 
           dispatch(setData(data));
-          console.log(objects, "objects");
-
-          console.log(data, "data");
         }
       }
     } catch (e) {
