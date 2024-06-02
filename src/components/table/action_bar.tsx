@@ -1,17 +1,17 @@
 import React from "react";
-import { Trash2, ScrollText, CirclePlus } from "lucide-react";
+import { Trash2, ScrollText } from "lucide-react";
 import { CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import AddDataDialog from "../add_data_dialog";
 
 const actions = [
-  { name: "Trash2", icon: <Trash2 className=" text-red-500" /> },
+  { name: "Trash2", component: <Trash2 className=" text-red-500" /> },
   {
     name: "ScrollText",
-    icon: <ScrollText />,
+    component: <ScrollText />,
   },
   {
     name: "CirclePlus ",
-    icon: <CirclePlus className=" text-green-500" />,
+    component: <AddDataDialog />,
   },
 ];
 
@@ -19,14 +19,10 @@ const ActionBar: React.FC = () => {
   return (
     <CardContent>
       <div className="flex space-x-4 border border-gray-200 rounded-md overflow-hidden">
-        {actions.map((action, index) => (
-          <Button
-            variant="secondary"
-            key={index}
-            className="flex items-center px-4 py-2 "
-          >
-            {action.icon}
-          </Button>
+        {actions.map((action) => (
+          <div key={action.name} className="flex items-center px-4 py-2 ">
+            {action.component}
+          </div>
         ))}
       </div>
     </CardContent>
