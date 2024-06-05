@@ -17,6 +17,7 @@ export const fetchClientData = createAsyncThunk(
       dispatch(setSelectedObject(selectedObject));
 
       if (selectedObject) {
+        console.log(selectedObject._id, "selectedObject");
         // Fetch the properties and data of the selected object
         const properties = await crudApi.fetchItems("property", {
           objectId: selectedObject._id,
@@ -24,6 +25,7 @@ export const fetchClientData = createAsyncThunk(
         const data = await crudApi.fetchItems("data", {
           objectId: selectedObject._id,
         });
+        console.log(data, "data");
 
         dispatch(setProperties(properties));
         dispatch(setData(data));
