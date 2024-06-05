@@ -19,7 +19,6 @@ export const fetchAndSetProperties = createAsyncThunk(
     const response = await crudApi.fetchItems("property", {
       objectId,
     });
-    console.log(response, "response");
     return response;
   }
 );

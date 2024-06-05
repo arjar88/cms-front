@@ -8,17 +8,16 @@ const SideNav: React.FC = () => {
   const { objects } = useSelector((state: RootState) => state.objects);
   const { selectedObject } = useSelector((state: RootState) => state.objects);
 
-  const dispatch = useDispatch();
-
   const [selectedObjectId, setSelectedObjectId] = useState<string>(
     selectedObject?._id
   );
 
+  const dispatch = useDispatch();
+
   const handleUpdateSelectedObject = (objectId: string) => {
-    const nextObject = objects.find((o) => o._id === objectId);
-    console.log(nextObject, "nextObject");
+    const newSelected = objects.find((o) => o._id === objectId);
     setSelectedObjectId(objectId);
-    dispatch(setSelectedObject(nextObject));
+    dispatch(setSelectedObject(newSelected));
   };
 
   useEffect(() => {
