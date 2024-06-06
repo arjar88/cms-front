@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { setSelectedObject } from "@/store/slices/objectSlice";
-import { fetchAndSetProperties } from "@/store/slices/propertySlice";
+import { fetchData, fetchProperties } from "@/store/thunks";
 
 const SideNav: React.FC = () => {
   const { objects } = useSelector((state: RootState) => state.objects);
@@ -18,11 +18,13 @@ const SideNav: React.FC = () => {
     const newSelected = objects.find((o) => o._id === objectId);
     setSelectedObjectId(objectId);
     dispatch(setSelectedObject(newSelected));
+    dispatch(fetchProperties(objectId));
   };
 
   useEffect(() => {
     if (selectedObjectId) {
-      dispatch(fetchAndSetProperties(selectedObjectId));
+      dispatch(fetchProperties(selectedObjectId));
+      dispatch(fetchData(selectedObjectId));
     }
   }, [selectedObjectId, dispatch]);
 

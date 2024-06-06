@@ -5,11 +5,11 @@ import { setObjects, setSelectedObject } from "./slices/objectSlice";
 import { setProperties } from "./slices/propertySlice";
 import { setData } from "./slices/dataSlice";
 
+// Fetches the clients objects,then fetches the default objects properties and data
 export const fetchClientData = createAsyncThunk(
   "client/fetchClientData",
   async (clientId: string, { dispatch }) => {
     try {
-      // Fetch the client's objects
       const objects = await crudApi.fetchItems("object", { clientId });
       const selectedObject = objects.length > 0 ? objects[0] : null;
 
@@ -33,6 +33,51 @@ export const fetchClientData = createAsyncThunk(
       }
     } catch (error) {
       console.error("Error fetching client data:", error);
+    }
+  }
+);
+
+// Fetch client's objects and set them in the store
+export const fetchObjects = createAsyncThunk(
+  "client/fetchClientObjects",
+  async (clientId: string, { dispatch }) => {
+    try {
+      const objects = await crudApi.fetchItems("object", { clientId });
+      dispatch(setObjects(objects));
+      return objects;
+    } catch (error) {
+      console.error("Error fetching client objects:", error);
+      throw error;
+    }
+  }
+);
+
+// Fetch properties for a specific object and set them in the store
+export const fetchProperties = createAsyncThunk(
+  "object/fetchObjectProperties",
+  async (objectId: string, { dispatch }) => {
+    try {
+      const properties = await crudApi.fetchItems("property", { objectId });
+      dispatch(setProperties(properties));
+      return properties;
+    } catch (error) {
+      console.error("Error fetching object properties:", error);
+      throw error;
+    }
+  }
+);
+
+// Fetch data for a specific object and set it in the store
+export const fetchData = createAsyncThunk(
+  "object/fetchObjectData",
+  async (objectId: string, { dispatch }) => {
+    try {
+      const data = await crudApi.fetchItems("data", { objectId });
+      dispatch(setData(data));
+      return data;
+    } catch (error) {
+      console.error("Error fetching object data:", error);
+      throw error;
     }
   }
 );
