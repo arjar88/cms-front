@@ -7,7 +7,7 @@ import { setData } from "./slices/dataSlice";
 
 // Fetches the clients objects,then fetches the default objects properties and data
 export const fetchClientData = createAsyncThunk(
-  "client/fetchClientData",
+  "thunk/fetchClientData",
   async (clientId: string, { dispatch }) => {
     try {
       const objects = await crudApi.fetchItems("object", { clientId });
@@ -39,7 +39,7 @@ export const fetchClientData = createAsyncThunk(
 
 // Fetch client's objects and set them in the store
 export const fetchObjects = createAsyncThunk(
-  "client/fetchClientObjects",
+  "thunk/fetchObjects",
   async (clientId: string, { dispatch }) => {
     try {
       const objects = await crudApi.fetchItems("object", { clientId });
@@ -54,7 +54,7 @@ export const fetchObjects = createAsyncThunk(
 
 // Fetch properties for a specific object and set them in the store
 export const fetchProperties = createAsyncThunk(
-  "object/fetchObjectProperties",
+  "thunk/fetchProperties",
   async (objectId: string, { dispatch }) => {
     try {
       const properties = await crudApi.fetchItems("property", { objectId });
@@ -69,7 +69,7 @@ export const fetchProperties = createAsyncThunk(
 
 // Fetch data for a specific object and set it in the store
 export const fetchData = createAsyncThunk(
-  "object/fetchObjectData",
+  "thunk/fetchData",
   async (objectId: string, { dispatch }) => {
     try {
       const data = await crudApi.fetchItems("data", { objectId });
