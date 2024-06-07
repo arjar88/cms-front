@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/store";
 import { Button } from "@/components/ui/button";
+import { Loader2, CirclePlus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -10,18 +11,18 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  dialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CirclePlus } from "lucide-react";
 import { crudApi } from "@/api";
+import { fetchData } from "@/store/thunks";
 
-interface AddDataDialogProps {}
-
-const AddDataDialog: React.FC<AddDataDialogProps> = () => {
+const AddDataDialog: React.FC = () => {
+  const dispatch = useDispatch();
   const { properties } = useSelector((state: RootState) => state.properties);
   const { selectedObject } = useSelector((state: RootState) => state.objects);
-
+  const [loading, setLoading] = useState<boolean>(false);
   const [dataMap, setDataMap] = useState<
     Map<
       string,
@@ -60,17 +61,21 @@ const AddDataDialog: React.FC<AddDataDialogProps> = () => {
   };
 
   const handleCreate = async () => {
+    setLoading(true);
     const newData = Object.create(null);
-    dataMap.forEach((value, key) => {
+    dataMap.forEach((value) => {
       newData[value.name] = value.value;
     });
-    //structure is consistent with backend controller
     const data = { data: { values: newData, objectId: selectedObject._id } };
     try {
       await crudApi.createItem("data", data);
-      console.log("object was created succesfully");
+      dispatch(fetchData(selectedObject._id));
+      console.log("object was created successfully");
+      dialogClose(); // Close the dialog on successful creation
     } catch (e) {
       console.log("creating new object failed", e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,8 +109,12 @@ const AddDataDialog: React.FC<AddDataDialogProps> = () => {
           ))}
         </div>
         <DialogFooter>
-          <Button type="button" onClick={handleCreate}>
-            Create
+          <Button type="button" onClick={handleCreate} disabled={loading}>
+            {loading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              "Add"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
