@@ -1,4 +1,5 @@
-# CMS/CRM Platform Core
+# Blazing Fast and Super Customizable CRM Front
+Welcome to our Blazing Fast and Super Customizable CRM Front, a powerful and efficient customer relationship management (CRM) solution designed specifically for everyday business owners. This CRM front-end leverages modern technologies to provide an intuitive, high-performance, and highly customizable user experience.
 
 Welcome to the CMS/CRM Platform Core repository! This repository contains the core functionalities and components for building a Content Management System (CMS) or Customer Relationship Management (CRM) platform.
 
