@@ -33,6 +33,8 @@ interface Property {
   displayName: string;
   name: string;
   value: string;
+  options?: [{ name: string; internalName: string }];
+  optionsTitle?: string;
 }
 
 const AddDataDialog: React.FC = () => {
@@ -51,6 +53,8 @@ const AddDataDialog: React.FC = () => {
         displayName: p.name,
         name: p.internalName,
         value: "",
+        options: p?.options,
+        optionsTitle: p?.optionsTitle,
       })
     );
 
@@ -107,84 +111,35 @@ const AddDataDialog: React.FC = () => {
       case "select":
         return (
           <>
+            <Label htmlFor={key} className="text-right">
+              {property.displayName}
+            </Label>
             <Select>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select a fruit" />
+                <SelectValue placeholder={property.optionsTitle} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Fruits</SelectLabel>
-                  <SelectItem value="apple">Apple</SelectItem>
-                  <SelectItem value="banana">Banana</SelectItem>
-                  <SelectItem value="blueberry">Blueberry</SelectItem>
-                  <SelectItem value="grapes">Grapes</SelectItem>
-                  <SelectItem value="pineapple">Pineapple</SelectItem>
+                  {property.options?.map((o) => (
+                    <SelectItem key={o.internalName} value={o.internalName}>
+                      {o.name}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
           </>
         );
 
-      case "file":
-        return (
-          <>
-            <FileUpload />
-          </>
-        );
-
       case "image":
         return (
           <>
+            <Label htmlFor={key} className="text-right">
+              {property.displayName}
+            </Label>
             <FileUpload />
           </>
         );
-
-      case "images":
-        console.log("Handling multiple images input:", property);
-        break;
-
-      case "Number":
-        console.log("Handling number input:", property);
-        break;
-
-      case "HTML":
-        console.log("Handling HTML input:", property);
-        break;
-
-      case "url":
-        // Handle URL input (with regex validation)
-        const urlPattern =
-          /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
-        if (urlPattern.test("")) {
-          console.log("Handling valid URL input:", property);
-        } else {
-          console.log("Invalid URL:", property);
-        }
-        break;
-
-      case "date":
-        // Handle date input
-        console.log("Handling date input:", property);
-        break;
-
-      case "dateTime":
-        // Handle dateTime input
-        console.log("Handling dateTime input:", property);
-        break;
-
-      case "time":
-        // Handle time input
-        console.log("Handling time input:", property);
-        break;
-
-      case "boolean":
-        // Handle boolean input (checkbox)
-        console.log("Handling boolean input:", property);
-        break;
-
-      default:
-        console.log("Unknown input type:", property);
-        break;
     }
   };
 
@@ -195,30 +150,18 @@ const AddDataDialog: React.FC = () => {
           <CirclePlus className="text-green-500" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[700px]">
         <DialogHeader>
           <DialogTitle>Create New Entry</DialogTitle>
           <DialogDescription>
             Enter the details below and click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-6 py-4">
           {[...dataMap].map(([key, value]) => (
             <div key={key} className="grid grid-cols-4 items-center gap-4">
               {element(key, value)}
             </div>
-
-            // <div key={key} className="grid grid-cols-4 items-center gap-4">
-            //   <Label htmlFor={key} className="text-right">
-            //     {value.displayName}
-            //   </Label>
-            //   <Input
-            //     id={key}
-            //     value={value.value}
-            //     onChange={(e) => handleUpdate(e.target.value, key)}
-            //     className="col-span-3"
-            //   />
-            // </div>
           ))}
         </div>
         <DialogFooter>
