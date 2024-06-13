@@ -7,7 +7,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -22,11 +21,12 @@ import {
   DialogTrigger,
   dialogClose,
 } from "@/components/ui/dialog";
-import FileUpload from "./file_uploader";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { crudApi } from "@/api";
 import { fetchData } from "@/store/thunks";
+import FileUpload from "./file_uploader";
+import { DatePicker } from "./date_picker";
 
 interface Property {
   type: string;
@@ -114,7 +114,7 @@ const AddDataDialog: React.FC = () => {
             <Label htmlFor={key} className="text-right">
               {property.displayName}
             </Label>
-            <Select>
+            <Select onValueChange={() => handleUpdate}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder={property.optionsTitle} />
               </SelectTrigger>
@@ -138,6 +138,16 @@ const AddDataDialog: React.FC = () => {
               {property.displayName}
             </Label>
             <FileUpload />
+          </>
+        );
+
+      case "date":
+        return (
+          <>
+            <Label htmlFor={key} className="text-right">
+              {property.displayName}
+            </Label>
+            <DatePicker />
           </>
         );
     }
