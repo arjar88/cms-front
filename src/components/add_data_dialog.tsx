@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store/store";
+import { RootState, AppDispatch } from "../store/store";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -27,63 +27,55 @@ import { crudApi } from "@/api";
 import { fetchData } from "@/store/thunks";
 import FileUpload from "./file_uploader";
 import { DatePicker } from "./date_picker";
+import {
+  updateFormData,
+  resetFormData,
+  FormValue,
+} from "../store/slices/formSlice";
 
 interface Property {
+  _id: string;
   type: string;
   displayName: string;
   name: string;
-  value: string;
-  options?: [{ name: string; internalName: string }];
+  options?: { name: string; internalName: string }[];
   optionsTitle?: string;
 }
 
 const AddDataDialog: React.FC = () => {
-  const dispatch = useDispatch();
-  const { properties } = useSelector((state: RootState) => state.properties);
-  const { selectedObject } = useSelector((state: RootState) => state.objects);
+  const dispatch = useDispatch<AppDispatch>();
+  const properties = useSelector(
+    (state: RootState) => state.properties.properties
+  );
+  const selectedObject = useSelector(
+    (state: RootState) => state.objects.selectedObject
+  );
+  const formData = useSelector((state: RootState) => state.form.formData);
   const [loading, setLoading] = useState<boolean>(false);
-  const [dataMap, setDataMap] = useState<Map<string, Property>>(new Map());
 
-  //create the map to store the new data being created based on objects properties
   useEffect(() => {
-    const initialMap = new Map<string, Property>();
-
-    properties.forEach((p) =>
-      initialMap.set(p._id, {
-        type: p.type,
-        displayName: p.name,
-        name: p.internalName,
-        value: "",
-        options: p?.options,
-        optionsTitle: p?.optionsTitle,
-      })
-    );
-
-    setDataMap(initialMap);
-  }, [properties]);
-
-  const handleUpdate = (newValue: string, key: string) => {
-    setDataMap((prevMap) => {
-      const updatedMap = new Map(prevMap);
-      const propObject = updatedMap.get(key);
-
-      if (propObject) {
-        updatedMap.set(key, { ...propObject, value: newValue });
-      }
-      return updatedMap;
+    properties.forEach((p) => {
+      dispatch(updateFormData({ key: p._id, value: "" }));
     });
+  }, [properties, dispatch]);
+
+  const handleUpdate = (newValue: FormValue, key: string) => {
+    dispatch(updateFormData({ key, value: newValue }));
   };
 
   const handleCreate = async () => {
     setLoading(true);
-    const newData = Object.create(null);
-    dataMap.forEach((value) => {
-      newData[value.name] = value.value;
+    const newData: Record<string, FormValue> = {};
+    Object.keys(formData).forEach((key) => {
+      newData[key] = formData[key];
     });
+
     const data = { data: { values: newData, objectId: selectedObject._id } };
+
     try {
       await crudApi.createItem("data", data);
       dispatch(fetchData(selectedObject._id));
+      dispatch(resetFormData());
       dialogClose(); // Close the dialog on successful creation
     } catch (e) {
       console.log("creating new object failed", e);
@@ -102,7 +94,7 @@ const AddDataDialog: React.FC = () => {
             </Label>
             <Input
               id={key}
-              value={property.value}
+              value={(formData[key] as string) || ""}
               onChange={(e) => handleUpdate(e.target.value, key)}
               className="col-span-3"
             />
@@ -115,7 +107,7 @@ const AddDataDialog: React.FC = () => {
             <Label htmlFor={key} className="text-right">
               {property.displayName}
             </Label>
-            <Select onValueChange={() => handleUpdate}>
+            <Select onValueChange={(value) => handleUpdate(value, key)}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder={property.optionsTitle} />
               </SelectTrigger>
@@ -138,7 +130,13 @@ const AddDataDialog: React.FC = () => {
             <Label htmlFor={key} className="text-right">
               {property.displayName}
             </Label>
-            <FileUpload />
+            <FileUpload
+              onChange={(files: File[]) => {
+                files.forEach((file, index) => {
+                  handleUpdate(file, `${key}-${index}`);
+                });
+              }}
+            />
           </>
         );
 
@@ -148,9 +146,14 @@ const AddDataDialog: React.FC = () => {
             <Label htmlFor={key} className="text-right">
               {property.displayName}
             </Label>
-            <DatePicker />
+            <DatePicker
+              onChange={(date: Date) => handleUpdate(date.toISOString(), key)}
+            />
           </>
         );
+
+      default:
+        return null;
     }
   };
 
@@ -169,9 +172,12 @@ const AddDataDialog: React.FC = () => {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-6 py-4">
-          {[...dataMap].map(([key, value]) => (
-            <div key={key} className="grid grid-cols-4 items-center gap-4">
-              {element(key, value)}
+          {properties.map((property) => (
+            <div
+              key={property._id}
+              className="grid grid-cols-4 items-center gap-4"
+            >
+              {element(property._id, property)}
             </div>
           ))}
         </div>
