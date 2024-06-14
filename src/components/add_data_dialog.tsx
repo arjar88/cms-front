@@ -44,6 +44,7 @@ const AddDataDialog: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [dataMap, setDataMap] = useState<Map<string, Property>>(new Map());
 
+  //create the map to store the new data being created based on objects properties
   useEffect(() => {
     const initialMap = new Map<string, Property>();
 

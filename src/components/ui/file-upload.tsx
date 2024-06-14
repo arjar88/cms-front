@@ -77,8 +77,8 @@ export const FileUploader = forwardRef<
       accept = {
         "image/*": [".jpg", ".jpeg", ".png", ".gif"],
       },
-      maxFiles = 1,
-      maxSize = 4 * 1024 * 1024,
+      maxFiles = 0,
+      maxSize = 500 * 1024 * 1024,
       multiple = true,
     } = dropzoneOptions;
 
@@ -152,7 +152,6 @@ export const FileUploader = forwardRef<
     const onDrop = useCallback(
       (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
         const files = acceptedFiles;
-
         if (!files) {
           toast.error("file error , probably too big");
           return;
@@ -169,7 +168,6 @@ export const FileUploader = forwardRef<
             newValues.push(file);
           }
         });
-
         onValueChange(newValues);
 
         if (rejectedFiles.length > 0) {

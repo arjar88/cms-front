@@ -38,9 +38,8 @@ const FileSvgDraw = () => {
 
 const FileUpload = () => {
   const [files, setFiles] = useState<File[] | null>(null);
-
   const dropZoneConfig = {
-    maxFiles: 5,
+    maxFiles: 20,
     maxSize: 1024 * 1024 * 4,
     multiple: true,
   };
