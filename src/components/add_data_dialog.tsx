@@ -36,7 +36,7 @@ import {
 interface Property {
   _id: string;
   type: string;
-  displayName: string;
+  internalName: string;
   name: string;
   options?: { name: string; internalName: string }[];
   optionsTitle?: string;
@@ -64,6 +64,9 @@ const AddDataDialog: React.FC = () => {
   };
 
   const handleCreate = async () => {
+    //debate if to send from the thunk , where there will get the response from the s3 bucket
+    //and then use that to create the data document for the db
+
     setLoading(true);
     const newData: Record<string, FormValue> = {};
     Object.keys(formData).forEach((key) => {
@@ -90,7 +93,7 @@ const AddDataDialog: React.FC = () => {
         return (
           <>
             <Label htmlFor={key} className="text-right">
-              {property.displayName}
+              {property.name}
             </Label>
             <Input
               id={key}
@@ -105,7 +108,7 @@ const AddDataDialog: React.FC = () => {
         return (
           <>
             <Label htmlFor={key} className="text-right">
-              {property.displayName}
+              {property.name}
             </Label>
             <Select onValueChange={(value) => handleUpdate(value, key)}>
               <SelectTrigger className="w-[180px]">
@@ -128,7 +131,7 @@ const AddDataDialog: React.FC = () => {
         return (
           <>
             <Label htmlFor={key} className="text-right">
-              {property.displayName}
+              {property.name}
             </Label>
             <FileUpload
               onChange={(files: File[]) => {
@@ -144,7 +147,7 @@ const AddDataDialog: React.FC = () => {
         return (
           <>
             <Label htmlFor={key} className="text-right">
-              {property.displayName}
+              {property.name}
             </Label>
             <DatePicker
               onChange={(date: Date) => handleUpdate(date.toISOString(), key)}
@@ -174,7 +177,7 @@ const AddDataDialog: React.FC = () => {
         <div className="grid gap-6 py-4">
           {properties.map((property) => (
             <div
-              key={property._id}
+              key={property.name}
               className="grid grid-cols-4 items-center gap-4"
             >
               {element(property._id, property)}

@@ -20,6 +20,7 @@ const formSlice = createSlice({
       action: PayloadAction<{ key: string; value: FormValue }>
     ) => {
       const { key, value } = action.payload;
+      //if value is array - for loop to add every file as a seperate entry
       state.formData[key] = value;
     },
     resetFormData: (state) => {

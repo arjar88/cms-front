@@ -1,7 +1,6 @@
-import * as React from "react";
+import { useState } from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -10,9 +9,24 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store/store";
+import { updateFormData } from "../store/slices/formSlice";
 
-export function DatePicker() {
-  const [date, setDate] = React.useState<Date>();
+interface DatePickerProps {
+  propertyId: string;
+}
+
+export function DatePicker({ propertyId }: DatePickerProps) {
+  const [date, setDate] = useState<Date>();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleUpdate = (newValue: Date | undefined) => {
+    if (newValue) {
+      setDate(newValue);
+      dispatch(updateFormData({ key: propertyId, value: newValue }));
+    }
+  };
 
   return (
     <Popover>
@@ -32,7 +46,7 @@ export function DatePicker() {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={(value) => handleUpdate(value)}
           initialFocus
         />
       </PopoverContent>
