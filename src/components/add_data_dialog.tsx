@@ -149,9 +149,7 @@ const AddDataDialog: React.FC = () => {
             <Label htmlFor={key} className="text-right">
               {property.name}
             </Label>
-            <DatePicker
-              onChange={(date: Date) => handleUpdate(date.toISOString(), key)}
-            />
+            <DatePicker propertyId={property._id} />
           </>
         );
 
