@@ -37,7 +37,7 @@ interface Property {
   optionsTitle?: string;
 }
 
-export type FormValue = string | File[] | Date | FormData;
+export type FormValue = string | File[] | Date;
 
 const AddDataDialog: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -65,14 +65,23 @@ const AddDataDialog: React.FC = () => {
   const handleCreate = async () => {
     setLoading(true);
 
-    const newData: Record<string, FormValue> = { ...formData };
+    const data = new FormData();
+    data.append("objectId", selectedObject?._id || "");
 
-    const data = { data: { values: newData, objectId: selectedObject?._id } };
+    for (const [key, value] of Object.entries(formData)) {
+      if (Array.isArray(value)) {
+        value.forEach((file) => data.append(key, file));
+      } else if (value instanceof Date) {
+        data.append(key, value.toISOString());
+      } else {
+        data.append(key, value);
+      }
+    }
 
     try {
       await crudApi.createItem("data", data);
       dispatch(fetchData(selectedObject?._id));
-      setFormData({}); // Reset the form data
+      setFormData({});
       dialogClose(); // Close the dialog on successful creation
     } catch (e) {
       console.log("Creating new object failed", e);
