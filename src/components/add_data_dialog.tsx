@@ -27,11 +27,6 @@ import { crudApi } from "@/api";
 import { fetchData } from "@/store/thunks";
 import FileUpload from "./file_uploader";
 import { DatePicker } from "./date_picker";
-import {
-  updateFormData,
-  resetFormData,
-  FormValue,
-} from "../store/slices/formSlice";
 
 interface Property {
   _id: string;
@@ -42,6 +37,8 @@ interface Property {
   optionsTitle?: string;
 }
 
+export type FormValue = string | File[] | Date | FormData;
+
 const AddDataDialog: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const properties = useSelector(
@@ -50,38 +47,35 @@ const AddDataDialog: React.FC = () => {
   const selectedObject = useSelector(
     (state: RootState) => state.objects.selectedObject
   );
-  const formData = useSelector((state: RootState) => state.form.formData);
+  const [formData, setFormData] = useState<Record<string, FormValue>>({});
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    const initialFormData: Record<string, FormValue> = {};
     properties.forEach((p) => {
-      dispatch(updateFormData({ key: p._id, value: "" }));
+      initialFormData[p._id] = "";
     });
-  }, [properties, dispatch]);
+    setFormData(initialFormData);
+  }, [properties]);
 
   const handleUpdate = (newValue: FormValue, key: string) => {
-    dispatch(updateFormData({ key, value: newValue }));
+    setFormData((prevFormData) => ({ ...prevFormData, [key]: newValue }));
   };
 
   const handleCreate = async () => {
-    //debate if to send from the thunk , where there will get the response from the s3 bucket
-    //and then use that to create the data document for the db
-
     setLoading(true);
-    const newData: Record<string, FormValue> = {};
-    Object.keys(formData).forEach((key) => {
-      newData[key] = formData[key];
-    });
 
-    const data = { data: { values: newData, objectId: selectedObject._id } };
+    const newData: Record<string, FormValue> = { ...formData };
+
+    const data = { data: { values: newData, objectId: selectedObject?._id } };
 
     try {
       await crudApi.createItem("data", data);
-      dispatch(fetchData(selectedObject._id));
-      dispatch(resetFormData());
+      dispatch(fetchData(selectedObject?._id));
+      setFormData({}); // Reset the form data
       dialogClose(); // Close the dialog on successful creation
     } catch (e) {
-      console.log("creating new object failed", e);
+      console.log("Creating new object failed", e);
     } finally {
       setLoading(false);
     }
@@ -133,13 +127,7 @@ const AddDataDialog: React.FC = () => {
             <Label htmlFor={key} className="text-right">
               {property.name}
             </Label>
-            <FileUpload
-              onChange={(files: File[]) => {
-                files.forEach((file, index) => {
-                  handleUpdate(file, `${key}-${index}`);
-                });
-              }}
-            />
+            <FileUpload propertyId={property._id} updateProp={handleUpdate} />
           </>
         );
 
@@ -149,7 +137,7 @@ const AddDataDialog: React.FC = () => {
             <Label htmlFor={key} className="text-right">
               {property.name}
             </Label>
-            <DatePicker propertyId={property._id} />
+            <DatePicker propertyId={property._id} updateProp={handleUpdate} />
           </>
         );
 

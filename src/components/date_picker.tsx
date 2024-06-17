@@ -9,22 +9,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store/store";
-import { updateFormData } from "../store/slices/formSlice";
+import { FormValue } from "./add_data_dialog";
 
 interface DatePickerProps {
   propertyId: string;
+  updateProp: (newValue: FormValue, key: string) => void;
 }
 
-export function DatePicker({ propertyId }: DatePickerProps) {
+export function DatePicker({ propertyId, updateProp }: DatePickerProps) {
   const [date, setDate] = useState<Date>();
-  const dispatch = useDispatch<AppDispatch>();
 
   const handleUpdate = (newValue: Date | undefined) => {
     if (newValue) {
       setDate(newValue);
-      dispatch(updateFormData({ key: propertyId, value: newValue }));
+      updateProp(newValue, propertyId);
     }
   };
 

@@ -6,7 +6,6 @@ import clientReducer from "./slices/clientSlice";
 import objectReducer from "./slices/objectSlice";
 import propertyReducer from "./slices/propertySlice";
 import dataReducer from "./slices/dataSlice";
-import formReducer from "./slices/formSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,7 +15,6 @@ export const store = configureStore({
     objects: objectReducer,
     properties: propertyReducer,
     data: dataReducer,
-    form: formReducer,
   },
 });
 

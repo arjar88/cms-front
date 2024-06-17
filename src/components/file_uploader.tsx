@@ -6,6 +6,7 @@ import {
   FileInput,
 } from "@/components/ui/file-upload";
 import { Paperclip } from "lucide-react";
+import { FormValue } from "./add_data_dialog";
 
 const FileSvgDraw = () => {
   return (
@@ -36,8 +37,19 @@ const FileSvgDraw = () => {
   );
 };
 
-const FileUpload = () => {
+interface FileUploadProps {
+  propertyId: string;
+  updateProp: (newValue: FormValue, key: string) => void;
+}
+
+const FileUpload = ({ propertyId, updateProp }: FileUploadProps) => {
   const [files, setFiles] = useState<File[] | null>(null);
+
+  const handleFileChange = (files: File[] | null) => {
+    files && updateProp(files, propertyId);
+    setFiles(files);
+  };
+
   const dropZoneConfig = {
     maxFiles: 20,
     maxSize: 1024 * 1024 * 4,
@@ -47,7 +59,7 @@ const FileUpload = () => {
   return (
     <FileUploader
       value={files}
-      onValueChange={setFiles}
+      onValueChange={(files) => handleFileChange(files)}
       dropzoneOptions={dropZoneConfig}
       className="relative bg-background rounded-lg p-2"
     >
