@@ -48,14 +48,18 @@ const AddDataDialog: React.FC = () => {
     (state: RootState) => state.objects.selectedObject
   );
   const [formData, setFormData] = useState<Record<string, FormValue>>({});
+  const [idNameMap, setIdNameMap] = useState<Map<string, string>>(new Map());
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const initialFormData: Record<string, FormValue> = {};
+    const map: Map<string, string> = new Map();
     properties.forEach((p) => {
       initialFormData[p._id] = "";
+      map.set(p._id, p.name);
     });
     setFormData(initialFormData);
+    setIdNameMap(map);
   }, [properties]);
 
   const handleUpdate = (newValue: FormValue, key: string) => {
