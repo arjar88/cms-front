@@ -27,6 +27,7 @@ import { crudApi } from "@/api";
 import { fetchData } from "@/store/thunks";
 import FileUpload from "./file_uploader";
 import { DatePicker } from "./date_picker";
+import { v4 as uuid4 } from "uuid";
 
 interface Property {
   _id: string;
@@ -48,18 +49,18 @@ const AddDataDialog: React.FC = () => {
     (state: RootState) => state.objects.selectedObject
   );
   const [formData, setFormData] = useState<Record<string, FormValue>>({});
-  const [idNameMap, setIdNameMap] = useState<Map<string, string>>(new Map());
+  const [nameIdMap, setNameIdMap] = useState<Map<string, string>>(new Map());
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const initialFormData: Record<string, FormValue> = {};
     const map: Map<string, string> = new Map();
     properties.forEach((p) => {
-      initialFormData[p._id] = "";
-      map.set(p._id, p.name);
+      initialFormData[p.internalName] = "";
+      map.set(p.internalName, p._id);
     });
     setFormData(initialFormData);
-    setIdNameMap(map);
+    setNameIdMap(map);
   }, [properties]);
 
   const handleUpdate = (newValue: FormValue, key: string) => {
@@ -74,7 +75,12 @@ const AddDataDialog: React.FC = () => {
 
     for (const [key, value] of Object.entries(formData)) {
       if (Array.isArray(value)) {
-        value.forEach((file) => data.append(key, file));
+        value.forEach((file) =>
+          data.append(
+            `${key}-${nameIdMap.get(key)}-${file.name}-${uuid4()}`,
+            file
+          )
+        );
       } else if (value instanceof Date) {
         data.append(key, value.toISOString());
       } else {
@@ -96,7 +102,7 @@ const AddDataDialog: React.FC = () => {
 
   const element = (key: string, property: Property) => {
     switch (property.type) {
-      case "string":
+      case "text":
         return (
           <>
             <Label htmlFor={key} className="text-right">
