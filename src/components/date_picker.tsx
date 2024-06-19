@@ -12,17 +12,17 @@ import {
 import { FormValue } from "./add_data_dialog";
 
 interface DatePickerProps {
-  propertyId: string;
+  propertyName: string;
   updateProp: (newValue: FormValue, key: string) => void;
 }
 
-export function DatePicker({ propertyId, updateProp }: DatePickerProps) {
+export function DatePicker({ propertyName, updateProp }: DatePickerProps) {
   const [date, setDate] = useState<Date>();
 
   const handleUpdate = (newValue: Date | undefined) => {
     if (newValue) {
       setDate(newValue);
-      updateProp(newValue, propertyId);
+      updateProp(newValue, propertyName);
     }
   };
 

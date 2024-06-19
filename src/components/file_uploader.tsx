@@ -38,15 +38,15 @@ const FileSvgDraw = () => {
 };
 
 interface FileUploadProps {
-  propertyId: string;
+  propertyName: string;
   updateProp: (newValue: FormValue, key: string) => void;
 }
 
-const FileUpload = ({ propertyId, updateProp }: FileUploadProps) => {
+const FileUpload = ({ propertyName, updateProp }: FileUploadProps) => {
   const [files, setFiles] = useState<File[] | null>(null);
 
   const handleFileChange = (files: File[] | null) => {
-    files && updateProp(files, propertyId);
+    files && updateProp(files, propertyName);
     setFiles(files);
   };
 

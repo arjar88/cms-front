@@ -73,11 +73,13 @@ const AddDataDialog: React.FC = () => {
     const data = new FormData();
     data.append("objectId", selectedObject?._id || "");
 
+    let propId: string;
     for (const [key, value] of Object.entries(formData)) {
+      propId = nameIdMap.get(key) as string;
       if (Array.isArray(value)) {
         value.forEach((file) =>
           data.append(
-            `${key}-${nameIdMap.get(key)}-${file.name}-${uuid4()}`,
+            `${key}-${propId}-${file.name}-${uuid4()}`, //internalPropertyName-propertyId-fileName-uuid
             file
           )
         );
@@ -146,7 +148,10 @@ const AddDataDialog: React.FC = () => {
             <Label htmlFor={key} className="text-right">
               {property.name}
             </Label>
-            <FileUpload propertyId={property._id} updateProp={handleUpdate} />
+            <FileUpload
+              propertyName={property.internalName}
+              updateProp={handleUpdate}
+            />
           </>
         );
 
@@ -156,7 +161,10 @@ const AddDataDialog: React.FC = () => {
             <Label htmlFor={key} className="text-right">
               {property.name}
             </Label>
-            <DatePicker propertyId={property._id} updateProp={handleUpdate} />
+            <DatePicker
+              propertyName={property.internalName}
+              updateProp={handleUpdate}
+            />
           </>
         );
 
@@ -185,7 +193,7 @@ const AddDataDialog: React.FC = () => {
               key={property.name}
               className="grid grid-cols-4 items-center gap-4"
             >
-              {element(property._id, property)}
+              {element(property.internalName, property)}
             </div>
           ))}
         </div>
