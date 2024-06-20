@@ -143,6 +143,7 @@ const AddDataDialog: React.FC = () => {
         );
 
       case "image":
+      case "file":
         return (
           <>
             <Label htmlFor={key} className="text-right">
