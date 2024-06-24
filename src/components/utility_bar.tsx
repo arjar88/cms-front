@@ -17,9 +17,6 @@ const UtilityBar: React.FC = () => {
         <div className="flex-grow">
           <Input placeholder="Search" />
         </div>
-        <div className="flex-grow mt-2 ml-4">
-          <Plus />
-        </div>
         <div className="flex-grow">
           <Button>Save As A List</Button>
         </div>
