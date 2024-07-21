@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { ReactNode, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { ColumnDef } from "@tanstack/react-table";
@@ -21,7 +21,7 @@ export const useColumns = (): ColumnDef<Lead>[] => {
       header: () => <div className="text-center">{property.name}</div>,
       cell: ({ row }) => {
         const value = row.getValue(property.internalName);
-        return <div className="text-center">{value}</div>;
+        return <div className="text-center">{value as ReactNode}</div>;
       },
     }));
   }, [properties]); // Recalculate columns only when properties change
